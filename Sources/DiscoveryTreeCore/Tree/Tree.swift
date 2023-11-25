@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class Tree {
+public class Tree: Codable {
     public let id: UUID
     private(set) weak var parent: Tree?
     private(set) var children: [Tree]
@@ -45,6 +45,31 @@ public class Tree {
             child.id == id
         })
         parent = nil
+    }
+    
+    public func hasAncestor(_ ancestor: Tree) -> Bool {
+        guard let parent = parent else { return false }
+        if parent.id == ancestor.id { return true }
+        return parent.hasAncestor(ancestor)
+    }
+    
+    public func root() -> Tree {
+        guard let parent = parent else { return self }
+        return parent.root()
+    }
+    
+    required public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decode(UUID.self, forKey: .id)
+        self.children = try container.decode([Tree].self, forKey: .children)
+        children.forEach { child in
+            child.parent = self
+        }
+    }
+    
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case children
     }
 }
 

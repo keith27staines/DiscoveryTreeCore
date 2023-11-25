@@ -63,4 +63,27 @@ final class TreeNodeTests: XCTestCase {
         XCTAssertFalse(root.contains(childOfChild))
         XCTAssertTrue(child.contains(childOfChild))
     }
+    
+    func test_hasAncestor() throws {
+        let root = Tree()
+        let child = Tree()
+        let childOfChild = Tree()
+        try root.add(child)
+        try child.add(childOfChild)
+        XCTAssertTrue(childOfChild.hasAncestor(child))
+        XCTAssertTrue(childOfChild.hasAncestor(root))
+        XCTAssertTrue(child.hasAncestor(root))
+        XCTAssertFalse(child.hasAncestor(childOfChild))
+    }
+    
+    func test_root() throws {
+        let root = Tree()
+        let child = Tree()
+        let childOfChild = Tree()
+        try root.add(child)
+        try child.add(childOfChild)
+        XCTAssertEqual(childOfChild.root().id, root.id)
+        XCTAssertEqual(child.root().id, root.id)
+        XCTAssertEqual(root.root().id, root.id)
+    }
 }

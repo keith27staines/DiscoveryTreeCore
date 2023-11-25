@@ -10,8 +10,8 @@ import DiscoveryTreeCore
 
 final class TreeMemoryLeakTests: XCTestCase {
 
-    weak var weakRoot: Tree?
-    weak var weakChild: Tree?
+    weak var weakRoot: Tree<String>?
+    weak var weakChild: Tree<String>?
 
     override func tearDownWithError() throws {
         XCTAssertNil(weakRoot)
@@ -19,8 +19,8 @@ final class TreeMemoryLeakTests: XCTestCase {
     }
 
     func testExample() throws {
-        let root = Tree()
-        let child = Tree()
+        let root = Tree<String>()
+        let child = Tree<String>()
         weakRoot = root
         weakChild = child
         try root.add(child)

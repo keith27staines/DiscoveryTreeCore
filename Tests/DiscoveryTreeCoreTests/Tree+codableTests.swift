@@ -11,14 +11,14 @@ import XCTest
 final class CodableTreeTests: XCTestCase {
 
     func test_code_and_decode() throws {
-        let root = Tree()
-        let child = Tree()
-        let childOfChild = Tree()
+        let root = Tree<String>()
+        let child = Tree<String>()
+        let childOfChild = Tree<String>()
         try root.add(child)
         try child.add(childOfChild)
         XCTAssertEqual(root.id, root.children[0].parent?.id)
         let data = try JSONEncoder().encode(root)
-        let decodedRoot = try JSONDecoder().decode(Tree.self, from: data)
+        let decodedRoot = try JSONDecoder().decode(Tree<String>.self, from: data)
         XCTAssertEqual(root.id, decodedRoot.id)
         XCTAssertEqual(root.children[0].id, decodedRoot.children[0].id)
         XCTAssertEqual(decodedRoot.id, decodedRoot.children[0].parent?.id)

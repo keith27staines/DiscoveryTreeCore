@@ -8,17 +8,19 @@
 import Foundation
 
 /// A data structure representing a tree, where each node of the tree is itself a tree
-public class Tree: Codable {
-    public let id: UUID
+public class Tree<Content: Codable>: Codable {
+    public let id: Id<Tree<Content>>
+    public var content: Content?
     private(set) weak var parent: Tree?
     private(set) var children: [Tree]
     
     /// Initialises a new ``Tree`` instance
     /// - Parameter parent: The parent tree of the new tree, if there is one
-    public init(parent: Tree? = nil) {
-        self.id = UUID()
+    public init(parent: Tree? = nil, content: Content? = nil) {
+        self.id = Id()
         self.parent = parent
         self.children = []
+        self.content = content
     }
     
     /// Add a child tree to the current instance
@@ -82,10 +84,23 @@ public class Tree: Codable {
         return parent.root()
     }
     
+    /// Init required for JSONDecoder
     required public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.id = try container.decode(UUID.self, forKey: .id)
-        self.children = try container.decode([Tree].self, forKey: .children)
+        let container: KeyedDecodingContainer<Tree<Content>.CodingKeys> 
+        = try decoder.container(keyedBy: Tree<Content>.CodingKeys.self)
+        
+        self.id = try container.decode(
+            Id<Tree<Content>>.self,
+            forKey: Tree<Content>.CodingKeys.id
+        )
+        self.children = try container.decode(
+            [Tree<Content>].self,
+            forKey: Tree<Content>.CodingKeys.children
+        )
+        self.content = try container.decodeIfPresent(
+            Content.self,
+            forKey: Tree<Content>.CodingKeys.content
+        )
         children.forEach { child in
             child.parent = self
         }
@@ -94,13 +109,7 @@ public class Tree: Codable {
     private enum CodingKeys: String, CodingKey {
         case id
         case children
-    }
-}
-
-extension Tree {
-    enum TreeError: Error {
-        case addingChildWithSameIdAsParent
-        case addingChildThatIsAlreadyAChild
+        case content
     }
 }
 

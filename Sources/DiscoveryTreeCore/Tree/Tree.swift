@@ -9,8 +9,10 @@ import Foundation
 
 /// A data structure representing a tree, where each node of the tree is itself a tree
 public class Tree<Content: Codable>: Codable {
+    
     public let id: Id<Tree<Content>>
     public var content: Content?
+    
     private(set) weak var parent: Tree?
     private(set) var children: [Tree]
     

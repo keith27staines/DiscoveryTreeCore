@@ -86,10 +86,33 @@ public class Tree<Content: Codable>: Codable {
         return parent.root()
     }
     
+    /// Calculates the depth of the receiver relative to the root
+    ///
+    /// The root has depth 0.
+    ///
+    /// All direct children  of the root have depth 1.
+    ///
+    /// All direct children of a direct child of root have depth 2, etc.
+    ///
+    /// - Returns: Depth relative to root
     public func depthFromRoot() -> Int {
         depthFromRoot(accumulatedDepth: 0)
     }
     
+    /// Calculates the offset of the receiver relative to the root
+    ///
+    /// The recursive sum of the node's offset relative to its parent, all the way to the root
+    ///
+    /// Examples:
+    ///
+    /// The root has offset 0.
+    ///
+    /// The first direct child  of the root have offset 0.
+    ///
+    /// The second direct child of a of root have offset 1.
+    ///
+    ///
+    /// - Returns: Offset relative to root
     public func offsetFromRoot() -> Int {
         childIndex() + (parent?.offsetFromRoot() ?? 0)
     }

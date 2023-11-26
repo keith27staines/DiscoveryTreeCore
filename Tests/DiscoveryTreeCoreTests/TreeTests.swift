@@ -8,6 +8,8 @@ final class TreeNodeTests: XCTestCase {
         XCTAssertNil(root.parent)
         XCTAssertTrue(root.children.isEmpty)
         XCTAssertTrue(root.contains(root))
+        XCTAssertTrue(root.isRoot)
+        XCTAssertTrue(root.isLeaf)
     }
     
     func test_addFirstChild() throws {
@@ -17,6 +19,10 @@ final class TreeNodeTests: XCTestCase {
         XCTAssertEqual(child.parent?.id, root.id)
         XCTAssertEqual(child.id, root.children[0].id)
         XCTAssertTrue(root.contains(child))
+        XCTAssertTrue(root.isRoot)
+        XCTAssertFalse(root.isLeaf)
+        XCTAssertFalse(child.isRoot)
+        XCTAssertTrue(child.isLeaf)
     }
     
     func test_addSameChildTwice_fails() throws {

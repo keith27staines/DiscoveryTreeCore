@@ -25,6 +25,13 @@ public class Tree<Content: Codable>: Codable {
         self.content = content
     }
     
+    ///  Returns `true` if the node has no parent, otherwise `false`
+    public var isRoot: Bool { parent == nil }
+    
+    
+    /// Returns `true` if the node has no children, otherwise `false`
+    public var isLeaf: Bool { children.isEmpty }
+    
     /// Add a child tree to the current instance
     /// - Parameter child: the ``Tree`` to add as a child of the receiver
     /// - throws if the child tree any of its own children has the same id as the current instance

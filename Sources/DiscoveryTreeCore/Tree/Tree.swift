@@ -43,9 +43,7 @@ public class Tree<Content: Codable>: Codable {
     }
     
     /// Tests whether  the receiver, or any of its descendents, has the same `id` as `tree`
-    ///
-    /// - Note a Tree always contains itself
-    ///
+    /// - Note: a Tree always contains itself
     /// - Parameter tree: The tree to search for
     /// - Returns: `true` if the receiver contains the specified tree, otherwise `false`
     public func contains(_ tree: Tree) -> Bool {
@@ -67,7 +65,6 @@ public class Tree<Content: Codable>: Codable {
     }
     
     /// Returns true if one of the the receiver's ancestors is the ancestor being checked for
-    ///
     /// - Parameter ancestor: A possible ancestor ``Tree``
     /// - Returns: `true` if the receiver does have the specified tree as an ancestor, otherise `false`
     public func hasAncestor(_ ancestor: Tree) -> Bool {
@@ -77,50 +74,41 @@ public class Tree<Content: Codable>: Codable {
     }
     
     /// Returns the root node of the tree
-    ///
-    /// - Note If a tree has no parent, then it is its own root
-    ///
-    /// - Returns: The root node the receiver
+    /// - Note: If a tree has no parent, then it is its own root
+    /// - Returns: The root node of the receiver
     public func root() -> Tree {
         guard let parent = parent else { return self }
         return parent.root()
     }
     
     /// Calculates the depth of the receiver relative to the root
-    ///
-    /// The root has depth 0.
-    ///
-    /// All direct children  of the root have depth 1.
-    ///
-    /// All direct children of a direct child of root have depth 2, etc.
-    ///
+    /// * The root has depth 0.
+    /// * All direct children  of the root have depth 1.
+    /// * All direct children of a direct child of root have depth 2, etc.
     /// - Returns: Depth relative to root
     public func depthFromRoot() -> Int {
         depthFromRoot(accumulatedDepth: 0)
     }
     
-    /// Calculates the offset of the receiver relative to the root
+    /// Calculates the offset of the receiver relative to the root.
     ///
-    /// The recursive sum of the node's offset relative to its parent, all the way to the root
+    /// The recursive sum of the node's offset relative to its parent, all the way to the root.
     ///
     /// Examples:
-    ///
-    /// The root has offset 0.
-    ///
-    /// The first direct child  of the root have offset 0.
-    ///
-    /// The second direct child of a of root have offset 1.
-    ///
-    ///
+    /// * The root has offset 0.
+    /// * The first direct child  of the root have offset 0.
+    /// * The second direct child of a of root have offset 1.
     /// - Returns: Offset relative to root
     public func offsetFromRoot() -> Int {
-        childIndex() + (parent?.offsetFromRoot() ?? 0)
+        (childIndex() ?? 0) + (parent?.offsetFromRoot() ?? 0)
     }
     
-    public func childIndex() -> Int {
+    /// Returns the index of the this node relative to its parent's children collection
+    /// - Returns: The index of the receiver
+    public func childIndex() -> Int? {
         return parent?.children.firstIndex { node in
             node.id == self.id
-        } ?? 0
+        }
     }
     
     private func depthFromRoot(accumulatedDepth: Int = 0) -> Int {

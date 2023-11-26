@@ -92,4 +92,56 @@ final class TreeNodeTests: XCTestCase {
         let root = Tree(content: ticket)
         XCTAssertEqual(root.content?.id, ticket.id)
     }
+    
+    func test_depthFromRootOfRoot() {
+        let tree = makeTestTree()
+        XCTAssertEqual(tree.depthFromRoot(), 0)
+    }
+    
+    func test_depthFromRootOfChildOfRoot() {
+        let tree = makeTestTree()
+        XCTAssertEqual(tree.children[0].depthFromRoot(), 1)
+    }
+    
+    func test_depthFromRootOfChildOfThirdChildOfRoot() {
+        let tree = makeTestTree()
+        XCTAssertEqual(tree.children[2].children[0].depthFromRoot(), 2)
+    }
+    
+    func test_offsetFromRootOfRoot() {
+        let tree = makeTestTree()
+        XCTAssertEqual(tree.offsetFromRoot(), 0)
+    }
+    
+    func test_offsetFromRootOfFirstChildOfRoot() {
+        let tree = makeTestTree()
+        XCTAssertEqual(tree.children[0].offsetFromRoot(), 0)
+    }
+    
+    func test_offsetFromRootOfSecondChildOfRoot() {
+        let tree = makeTestTree()
+        XCTAssertEqual(tree.children[1].offsetFromRoot(), 1)
+    }
+    
+    func test_offsetFromRootOfChildOfThirdChildOfRoot() {
+        let tree = makeTestTree()
+        XCTAssertEqual(tree.children[2].children[0].offsetFromRoot(), 2)
+    }
+}
+
+fileprivate func makeTestTree() -> Tree<Ticket> {
+    func ticket(x: Int, y: Int) -> Ticket {
+        Ticket(title: "x: \(x), y:\(y)")
+    }
+    
+    let t00 = Tree(content: ticket(x: 0, y: 0))
+    let t01 = Tree(content: ticket(x: 0, y: 1))
+    let t11 = Tree(content: ticket(x: 1, y: 1))
+    let t21 = Tree(content: ticket(x: 2, y: 1))
+    let t22 = Tree(content: ticket(x: 2, y: 2))
+    try? t00.add(t01)
+    try? t00.add(t11)
+    try? t00.add(t21)
+    try? t21.add(t22)
+    return t00
 }

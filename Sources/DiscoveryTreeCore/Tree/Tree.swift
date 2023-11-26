@@ -86,6 +86,25 @@ public class Tree<Content: Codable>: Codable {
         return parent.root()
     }
     
+    public func depthFromRoot() -> Int {
+        depthFromRoot(accumulatedDepth: 0)
+    }
+    
+    public func offsetFromRoot() -> Int {
+        childIndex() + (parent?.offsetFromRoot() ?? 0)
+    }
+    
+    public func childIndex() -> Int {
+        return parent?.children.firstIndex { node in
+            node.id == self.id
+        } ?? 0
+    }
+    
+    private func depthFromRoot(accumulatedDepth: Int = 0) -> Int {
+        guard let parent = parent else { return accumulatedDepth }
+        return parent.depthFromRoot(accumulatedDepth: accumulatedDepth + 1)
+    }
+    
     /// Init required for JSONDecoder
     required public init(from decoder: Decoder) throws {
         let container: KeyedDecodingContainer<Tree<Content>.CodingKeys> 

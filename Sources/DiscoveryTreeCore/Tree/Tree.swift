@@ -13,8 +13,8 @@ public class Tree<Content: Codable>: Codable {
     public let id: Id<Tree<Content>>
     public var content: Content?
     
-    private(set) weak var parent: Tree?
-    private(set) var children: [Tree]
+    public private(set) weak var parent: Tree?
+    public private(set) var children: [Tree]
     
     /// Initialises a new ``Tree`` instance
     /// - Parameter parent: The parent tree of the new tree, if there is one

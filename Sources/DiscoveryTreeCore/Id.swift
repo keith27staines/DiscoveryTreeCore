@@ -17,11 +17,11 @@ public struct Id<A>: Codable, Equatable {
     /// A unique identifier
     public let uuid: UUID
     
-    init(uuid: UUID) {
+    public init(uuid: UUID) {
         self.uuid = uuid
     }
     
-    init() {
+    public init() {
         self.uuid = UUID()
     }
 }

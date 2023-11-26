@@ -1,5 +1,5 @@
 import XCTest
-@testable import DiscoveryTreeCore
+import DiscoveryTreeCore
 
 final class TreeNodeTests: XCTestCase {
     
@@ -88,7 +88,7 @@ final class TreeNodeTests: XCTestCase {
     }
     
     func test_content() throws {
-        let ticket = Ticket(name: "name")
+        let ticket = Ticket(title: "name")
         let root = Tree(content: ticket)
         XCTAssertEqual(root.content?.id, ticket.id)
     }

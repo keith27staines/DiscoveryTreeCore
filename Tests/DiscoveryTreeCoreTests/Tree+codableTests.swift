@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import DiscoveryTreeCore
+import DiscoveryTreeCore
 
 final class CodableTreeTests: XCTestCase {
 

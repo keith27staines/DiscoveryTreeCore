@@ -94,9 +94,9 @@ final class TreeNodeTests: XCTestCase {
     }
     
     func test_content() throws {
-        let ticket = Ticket(title: "name")
-        let root = Tree(content: ticket)
-        XCTAssertEqual(root.content?.id, ticket.id)
+        let content = TestContent(title: "")
+        let root = Tree(content: content)
+        XCTAssertEqual(root.content?.id, content.id)
     }
     
     func test_depthFromRootOfRoot() {
@@ -135,16 +135,16 @@ final class TreeNodeTests: XCTestCase {
     }
 }
 
-fileprivate func makeTestTree() -> Tree<Ticket> {
-    func ticket(x: Int, y: Int) -> Ticket {
-        Ticket(title: "x: \(x), y:\(y)")
+fileprivate func makeTestTree() -> Tree<TestContent> {
+    func makeContent(x: Int, y: Int) -> TestContent {
+        TestContent(title: "x: \(x), y:\(y)")
     }
     
-    let t00 = Tree(content: ticket(x: 0, y: 0))
-    let t01 = Tree(content: ticket(x: 0, y: 1))
-    let t11 = Tree(content: ticket(x: 1, y: 1))
-    let t21 = Tree(content: ticket(x: 2, y: 1))
-    let t22 = Tree(content: ticket(x: 2, y: 2))
+    let t00 = Tree(content: makeContent(x: 0, y: 0))
+    let t01 = Tree(content: makeContent(x: 0, y: 1))
+    let t11 = Tree(content: makeContent(x: 1, y: 1))
+    let t21 = Tree(content: makeContent(x: 2, y: 1))
+    let t22 = Tree(content: makeContent(x: 2, y: 2))
     try? t00.add(t01)
     try? t00.add(t11)
     try? t00.add(t21)

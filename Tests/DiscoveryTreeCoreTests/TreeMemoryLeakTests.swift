@@ -23,6 +23,6 @@ final class TreeMemoryLeakTests: XCTestCase {
         let child = Tree<String>()
         weakRoot = root
         weakChild = child
-        try root.add(child)
+        try root.appendChild(child)
     }
 }

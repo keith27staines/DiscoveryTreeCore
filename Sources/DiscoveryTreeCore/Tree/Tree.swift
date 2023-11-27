@@ -33,24 +33,36 @@ public class Tree<Content: Codable>: Codable {
     public var isLeaf: Bool { children.isEmpty }
     
     /// Add a child tree to the current instance
-    /// - Parameter child: the ``Tree`` to add as a child of the receiver
-    /// - throws if the child tree any of its own children has the same id as the current instance
-    public func add(_ child: Tree) throws {
-        guard child.id != self.id else {
-            throw TreeError.addingChildWithSameIdAsParent
-        }
-        let alreadyAChild = children.contains { existingChild in
-            existingChild.id == child.id
-        }
-        guard !alreadyAChild else {
-            throw TreeError.addingChildThatIsAlreadyAChild
-        }
+    /// - Parameter child: the ``Tree`` to append to the receiver's children
+    /// - Note: this is a note
+    /// - Throws: If the proposed child contains the receiver, or if the receiver contains the proposed child
+    public func appendChild(_ child: Tree) throws {
+        guard !contains(child)
+        else { throw TreeError.proposedChildIsAlreadyADescendant }
+        guard !child.contains(self)
+        else { throw TreeError.proposedChildIsAnAncestor }
         child.parent = self
         children.append(child)
     }
     
+    /// Replaces the child at the specified index
+    /// - Parameters:
+    ///   - index: The index of the child to be replaced
+    ///   - replacement: The Tree that is to become a new child
+    /// - Returns: The child that has been replaced
+    public func replaceChild(at index: Int, with replacement: Tree) throws -> Tree {
+        guard !contains(replacement)
+        else { throw TreeError.proposedChildIsAlreadyADescendant }
+        guard !replacement.contains(self)
+        else { throw TreeError.proposedChildIsAnAncestor }
+        let childBeingReplaced = children[index]
+        children[index] = replacement
+        replacement.parent = self
+        return childBeingReplaced
+    }
+    
     /// Tests whether  the receiver, or any of its descendents, has the same `id` as `tree`
-    /// - Note: a Tree always contains itself
+    /// - Note: a ``Tree`` always contains itself
     /// - Parameter tree: The tree to search for
     /// - Returns: `true` if the receiver contains the specified tree, otherwise `false`
     public func contains(_ tree: Tree) -> Bool {

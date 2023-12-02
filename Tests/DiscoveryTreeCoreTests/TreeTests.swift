@@ -43,6 +43,23 @@ final class TreeNodeTests: XCTestCase {
         XCTAssertTrue(root.contains(child2))
     }
     
+    func test_insertChildAtIndex() throws {
+        let root = Tree<String>()
+        let child1 = Tree<String>()
+        let child2 = Tree<String>()
+        let child3 = Tree<String>()
+        try root.appendChild(child1)
+        try root.appendChild(child2)
+        try root.appendChild(child3)
+        let newChild = Tree<String>()
+        try root.insertChild(newChild, at: 0)
+        XCTAssert(root.contains(newChild))
+        XCTAssertEqual(root.children[0].id, newChild.id)
+        newChild.removeFromParent()
+        try root.insertChild(newChild, at: 1)
+        XCTAssertEqual(root.children[1].id, newChild.id)
+    }
+    
     func test_addingChildToChild() throws {
         let root = Tree<String>()
         let child = Tree<String>()

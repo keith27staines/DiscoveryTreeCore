@@ -12,7 +12,7 @@ import Foundation
 /// Use Id as a safer alternative to using a plain UUID as an object identifier.
 /// Id has the advantage that it will only allow comparisons between objects of the same type
 ///
-public struct Id<A>: Codable, Equatable {
+public struct Id<A>: Codable, Equatable, Hashable {
     
     /// A unique identifier
     public let uuid: UUID
